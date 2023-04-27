@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-import { Button, Center, Icon, Spinner } from "native-base";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -24,7 +23,6 @@ import CreateAccount from "./components/new_onboarding/CreateAccount";
 
 import Trade from "./pages/trade";
 import Account from "./pages/account";
-import News from "./pages/news";
 import Profile from "./pages/profile";
 import GuestLanding from "./pages/guestlanding";
 import StockDetail from "./pages/stock-detail";
@@ -91,7 +89,7 @@ const InvestUserStack = () => {
     >
       <InvestStack.Screen name="Account" component={Account} />
       <InvestStack.Screen name="Trade" component={Trade} />
-      <InvestStack.Screen name="News" component={News} />
+      {/* <InvestStack.Screen name="News" component={News} /> */}
       <InvestStack.Screen name="Profile" component={Profile} />
       <InvestStack.Screen name="Order" component={StockDetail} />
       <InvestStack.Screen name="OrderMini" component={StockDetailMini} />

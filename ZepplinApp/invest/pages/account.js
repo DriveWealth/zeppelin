@@ -46,9 +46,7 @@ import { AuthContext } from "../FirebaseProvider";
 import { NewsContext } from "../NewsProvider";
 import Footer from "../components/Footer";
 
-const chartImage = require("./../components/img/Chart.png");
-const logosImage = require("./../components/img/logos.png");
-const YahooImage = require("../images/YahooLogo.png");
+const DWImage = require("../images/ZeppelinLogo.png");
 
 const InvestUser = () => {
   return (
@@ -95,7 +93,7 @@ const Account = ({ navigation, route }) => {
     <>
       <VStack safeArea={true} p={3} flex="1">
         <Center>
-        <Image source={YahooImage} w="100" h="100">
+        <Image source={DWImage} w="100" h="100">
 
         </Image>
         </Center>

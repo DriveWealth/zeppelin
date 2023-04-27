@@ -1,17 +1,11 @@
-import firebase, { initializeApp } from "firebase/app";
+import { initializeApp } from "firebase/app";
 import {
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { useEffect, useMemo, useState, createContext } from "react";
 
-// Optionally import the services that you want to use
-//import {...} from "firebase/auth";
-//import {...} from "firebase/database";
-//import {...} from "firebase/firestore";
-//import {...} from "firebase/functions";
-//import {...} from "firebase/storage";
+import { useEffect, useState, createContext } from "react";
 
 // Initialize Firebase
 const firebaseConfig = {
