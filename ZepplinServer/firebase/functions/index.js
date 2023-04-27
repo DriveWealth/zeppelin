@@ -107,7 +107,7 @@ const proxyHandler = ({dwConfig, request, response}) => async () => {
         "dw-customer-user-id": request.dwUserId,
       },
     };
-
+    
     functions.logger.debug(newUrl, "<<<< Proxy URL");
     // Fire off the request
     const resp = await axios(config);
@@ -131,7 +131,9 @@ const proxyHandler = ({dwConfig, request, response}) => async () => {
     // Respond with the data returned by DW
     response.status(resp.status).json(resp.data);
   } catch (e) {
-    functions.logger.error(e);
+    if (e.response && e.response.status) {
+      return response.status(e.response.status).send({...e.response.data, source: 'Drivewealth API'});
+    }
     response.status(401).send("Unauthrorized");
   }
 };
