@@ -10,16 +10,10 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [ {
-      "source": "/news/**/*",
-      "function": "news"
-    },{
-      "source": "/bot",
-      "function": "bot"
-    }, {
+    "rewrites": [{
       "source": "**",
       "function": "proxy"
-    } ]
+    }]
   },
   "emulators": {
     "firestore": {

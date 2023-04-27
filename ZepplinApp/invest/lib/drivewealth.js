@@ -4,8 +4,8 @@ const fetch = require("axios").default;
 // Loading a local instruments cache
 const instruments = require('./instruments.json');
 
-// const BASE_URL = "http://localhost:5001/drivewealth-a7e9a/us-central1/proxy";
-const BASE_URL =  "https://us-central1-drivewealth-a7e9a.cloudfunctions.net/proxy";
+const BASE_URL = "http://localhost:5002";
+// const BASE_URL =  "https://us-central1-drivewealth-a7e9a.cloudfunctions.net/proxy";
 
 const Drivewealth = ({ baseUrl = BASE_URL, authHeaders }) => {
   const headers = {

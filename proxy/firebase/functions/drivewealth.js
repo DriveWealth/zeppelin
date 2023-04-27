@@ -2,9 +2,9 @@ const fetch = require("axios");
 const BASE_URL = 'https://bo-api.drivewealth.io';
 
 const Drivewealth = ({
-  baseUrl = BASE_URL,
-  clientID,
-  clientSecret,
+  boAPIUrl = BASE_URL,
+  dwClientID,
+  dwSecret,
   dwAppKey,
   logger,
 }) => {
@@ -23,12 +23,24 @@ const Drivewealth = ({
         return dw.cache;
       }
       logger.info("Cache MISS");
-      const url = `${baseUrl}/back-office/auth/tokens`;
+      const url = `${boAPIUrl}/back-office/auth/tokens`;
+      logger.info(url,
+        {
+          clientID: dwClientID,
+          clientSecret: dwSecret,
+        },
+        {
+          headers : {
+            "cache-control": "no-cache",
+            "Content-Type": "application/json",
+            "dw-client-app-key": dwAppKey,
+          },
+        })
       const resp = await fetch.post(
         url,
         {
-          clientID,
-          clientSecret,
+          clientID: dwClientID,
+          clientSecret: dwSecret,
         },
         {
           headers : {
@@ -62,7 +74,7 @@ const Drivewealth = ({
       };
     },
     async getPositions(accountID) {
-      const url = `${baseUrl}/back-office/accounts/${accountID}/summary/positions`;
+      const url = `${boAPIUrl}/back-office/accounts/${accountID}/summary/positions`;
       const resp = await fetch.get(url, {
         headers: dw.getHeaders(),
       });
@@ -75,7 +87,7 @@ const Drivewealth = ({
     async getAsset(symbol, customerUserId) {
       //  Asset data
       const resp = await fetch.get(
-        `${baseUrl}/back-office/instruments/${symbol}`,
+        `${boAPIUrl}/back-office/instruments/${symbol}`,
         {
           headers: dw.getHeaders(),
         }
@@ -86,7 +98,7 @@ const Drivewealth = ({
       }
       const asset = resp.data;
       // Snapshot
-      const snapResp = await fetch.get(`${baseUrl}/back-office/quotes/vdr`, {
+      const snapResp = await fetch.get(`${boAPIUrl}/back-office/quotes/vdr`, {
         headers: { ...headers },
         params: {
           symbols: symbol,
@@ -122,7 +134,7 @@ const Drivewealth = ({
         orderType,
         accountNo,
       };
-      const url = `${baseUrl}/back-office/orders`;
+      const url = `${boAPIUrl}/back-office/orders`;
 
       const resp = await fetch.post(url, payload, {
         headers: dw.getHeaders(),
@@ -135,7 +147,7 @@ const Drivewealth = ({
     },
     async getOrders(accountID) {
       const resp = await fetch(
-        `${baseUrl}/back-office/accounts/${accountID}/summary/orders`,
+        `${boAPIUrl}/back-office/accounts/${accountID}/summary/orders`,
         {
           headers: dw.getHeaders(),
         }

@@ -12,8 +12,11 @@ const axios = require("axios");
 // DW Libraries
 const Drivewealth = require("./drivewealth");
 
+// Load app properties
+const dwClientID = process.env.DW_CLIENT_ID;
+const boAPIUrl = process.env.DW_API_URL;
+
 // Define the secrets so that they get populated at runtime
-const dwClientID = defineSecret("DW_CLIENT_ID");
 const dwClientSecret = defineSecret("DW_CLIENT_SECRET");
 const dwAppKey = defineSecret("DW_APP_KEY");
 
@@ -72,7 +75,7 @@ const associateAccount = async (uid, dwUserId, data) => {
     .set({ dwUserId });
 };
 
-const proxyHandler = ({dwConfig, request}) => async () => {
+const proxyHandler = ({dwConfig, request, response}) => async () => {
   // DW Client
   const client = Drivewealth(dwConfig);
 
@@ -84,10 +87,11 @@ const proxyHandler = ({dwConfig, request}) => async () => {
     // Get the access token for this call.
     const { accessToken } = await client.getToken();
 
-    functions.logger.info(`Authorized! ${uid}`, { structuredData: true });
+    functions.logger.info(`Authorized! ${request.uid}`, { structuredData: true });
 
-    const newPath = request.path.replace("USER_ID", dwUserId);
-    const newUrl = `${BROKER_URL}${newPath}`;
+    const newPath = request.path.replace("USER_ID", request.dwUserId);
+
+    const newUrl = `${dwConfig.boAPIUrl}${newPath}`;
 
     // The config for axios. This is going to call DW APIs for us and
     // act as a proxy
@@ -99,7 +103,7 @@ const proxyHandler = ({dwConfig, request}) => async () => {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
-        "dw-client-app-key": DW_CONFIG.dwAppKey,
+        "dw-client-app-key": dwAppKey.value(),
         "dw-customer-user-id": request.dwUserId,
       },
     };
@@ -134,14 +138,16 @@ const proxyHandler = ({dwConfig, request}) => async () => {
 
 // The primary function that proxies all requests from the App to DW
 exports.proxy = functions
-  .runWith({ secrets: [dwClientID, dwClientSecret, dwAppKey], timeoutSeconds: 300 })
+  .runWith({ secrets: [dwClientSecret, dwAppKey], timeoutSeconds: 300 })
   .https.onRequest(async (request, response) => {
     const dwConfig = {
-      clientID: dwClientID.value(),
-      clientSecret: dwClientSecret.value(),
+      boAPIUrl,
+      dwClientID,
+      dwSecret: dwClientSecret.value(),
       dwAppKey: dwAppKey.value(),
       logger: functions.logger,
     }
+
     corsHandler(request, response, proxyHandler({
       dwConfig,
       request,
