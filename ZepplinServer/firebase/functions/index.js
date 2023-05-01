@@ -1,7 +1,7 @@
 // Firebase Imports
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-const { defineSecret } = require("firebase-functions/params");
+// const { defineSecret } = require("firebase-functions/params");
 const { getAuth } = require("firebase-admin/auth");
 const { applicationDefault } = require("firebase-admin/app");
 
@@ -17,8 +17,12 @@ const dwClientID = process.env.DW_CLIENT_ID;
 const boAPIUrl = process.env.DW_API_URL;
 
 // Define the secrets so that they get populated at runtime
-const dwClientSecret = defineSecret("DW_CLIENT_SECRET");
-const dwAppKey = defineSecret("DW_APP_KEY");
+// const dwClientSecret = defineSecret("DW_CLIENT_SECRET");
+// const dwAppKey = defineSecret("DW_APP_KEY");
+
+// For Local just get it from env
+const dwClientSecret = process.env.DW_CLIENT_SECRET;
+const dwAppKey = process.env.DW_APP_KEY;
 
 admin.initializeApp({
   credential: applicationDefault(),
@@ -140,13 +144,15 @@ const proxyHandler = ({dwConfig, request, response}) => async () => {
 
 // The primary function that proxies all requests from the App to DW
 exports.proxy = functions
-  .runWith({ secrets: [dwClientSecret, dwAppKey], timeoutSeconds: 300 })
+  // .runWith({ secrets: [dwClientSecret, dwAppKey], timeoutSeconds: 300 })
   .https.onRequest(async (request, response) => {
     const dwConfig = {
       boAPIUrl,
       dwClientID,
-      dwSecret: dwClientSecret.value(),
-      dwAppKey: dwAppKey.value(),
+      // dwSecret: dwClientSecret.value(),
+      // dwAppKey: dwAppKey.value(),
+      dwSecret: dwClientSecret,
+      dwAppKey: dwAppKey,
       logger: functions.logger,
     }
 
