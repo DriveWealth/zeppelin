@@ -5,6 +5,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import OnboardingProvider from "./components/onboarding/OnboardingContext";
 import InvestmentProvider, { InvestmentContext } from "./InvestmentProvider";
 
+import BasicInfo from "./components/onboarding/BasicInfo";
+import GetStarted from "./components/onboarding/GetStarted";
+
 import Trade from "./pages/trade";
 import Account from "./pages/account";
 import Profile from "./pages/profile";
@@ -38,13 +41,15 @@ const OnboardingStack = () => {
         initialRouteName="BasicInfo"
         screenOptions={{ headerShown: false }}
       >
+        <Stack.Screen name="BasicInfo" component={BasicInfo} />
+        <Stack.Screen name="GetStarted" component={GetStarted} />
       </Stack.Navigator>
     </OnboardingProvider>
   );
 };
 
 const InvestUserStack = () => {
-  const {lookupSymbol} = useContext(InvestmentContext)
+  const { lookupSymbol } = useContext(InvestmentContext);
   return (
     <InvestStack.Navigator
       initialRouteName={lookupSymbol ? "OrderMini" : "Account"}

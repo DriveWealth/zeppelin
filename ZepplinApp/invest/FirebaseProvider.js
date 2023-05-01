@@ -1,4 +1,6 @@
 import { initializeApp } from "firebase/app";
+import Constants from 'expo-constants';
+
 import {
   getAuth,
   onAuthStateChanged,
@@ -8,16 +10,8 @@ import {
 import { useEffect, useState, createContext } from "react";
 
 // Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyDr6zBJ911Np5iqezc5XJ9h2fJXxDea0WM",
-  authDomain: "drivewealth-a7e9a.firebaseapp.com",
-  projectId: "drivewealth-a7e9a",
-  storageBucket: "drivewealth-a7e9a.appspot.com",
-  messagingSenderId: "459224660252",
-  appId: "1:459224660252:web:d4c5e90c8a50dcdf5ea2d9",
-  measurementId: "G-E1D3TM3K2R",
-};
 
+const {firebaseConfig} = Constants.expoConfig.extra;
 const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 // For more information on how to access Firebase in your project,

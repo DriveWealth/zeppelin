@@ -1,13 +1,8 @@
-
 const fetch = require("axios").default;
-
 // Loading a local instruments cache
 const instruments = require('./instruments.json');
 
-const BASE_URL = "http://localhost:5002";
-// const BASE_URL =  "https://us-central1-drivewealth-a7e9a.cloudfunctions.net/proxy";
-
-const Drivewealth = ({ baseUrl = BASE_URL, authHeaders }) => {
+const Drivewealth = ({ baseUrl, authHeaders }) => {
   const headers = {
     "cache-control": "no-cache",
     'Content-Type': 'application/json',
@@ -17,7 +12,7 @@ const Drivewealth = ({ baseUrl = BASE_URL, authHeaders }) => {
 
   const dw = {
     // Creates an account in Alpaca that is automatically approved
-    async createUser(payload) {
+    async createUser(payload) {      
       const url = `${baseUrl}/back-office/users`;
       const resp = await fetch.post(url, payload, {
         headers,

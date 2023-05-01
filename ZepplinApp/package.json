@@ -39,7 +39,8 @@
     "react-native-webview": "11.23.0",
     "react-query": "^3.39.2",
     "victory": "^36.6.8",
-    "victory-native": "^36.6.8"
+    "victory-native": "^36.6.8",
+    "expo-constants": "~13.2.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

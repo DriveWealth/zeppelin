@@ -6,6 +6,7 @@ import React, {
   useMemo,
 } from "react";
 import { useQuery } from "react-query";
+import Constants from 'expo-constants';
 
 // import * as Keychain from 'react-native-keychain';
 import config from "./config";
@@ -174,7 +175,7 @@ const fetchBars = (investClient) => async (instrumentID, timeframe, start, end) 
 };
 
 const InvestmentProvider = ({ children, authHeaders, lookupSymbol }) => {
-  const investClient = InvestClient({ authHeaders });
+  const investClient = InvestClient({ authHeaders, baseUrl: Constants.expoConfig.extra.drivewealth.apiUrl });
   const [state, dispatch] = useReducer(reducer, {...initialState, lookupSymbol});
   const { user } = useContext(AuthContext);
 
