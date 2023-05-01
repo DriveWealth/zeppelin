@@ -38,6 +38,11 @@
     "extra": {
       "eas": {
         "projectId": "0ee6b0ab-4a43-43ca-8add-dc7057b7ec2f"
+      },
+      "firebaseConfig": {
+      },
+      "drivewealth": {
+        "apiUrl": "http://localhost:5002"
       }
     }
   }
