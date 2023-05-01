@@ -100,7 +100,7 @@ const Login = ({ navigation, route }) => {
               placeholder="username"
               onChangeText={setUsername}
               style={{ fontSize: 16 }}
-              autoCapitalize={false}
+              autoCapitalize={'none'}
             />
             <FormControl.HelperText></FormControl.HelperText>
             <FormControl.ErrorMessage

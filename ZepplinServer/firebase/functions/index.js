@@ -95,6 +95,9 @@ const proxyHandler = ({dwConfig, request, response}) => async () => {
 
     const newPath = request.path.replace("USER_ID", request.dwUserId);
 
+    functions.logger.info(newPath)
+
+    // console.log(dwConfig)
     const newUrl = `${dwConfig.boAPIUrl}${newPath}`;
 
     // The config for axios. This is going to call DW APIs for us and
@@ -107,7 +110,7 @@ const proxyHandler = ({dwConfig, request, response}) => async () => {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
-        "dw-client-app-key": dwAppKey.value(),
+        "dw-client-app-key": dwAppKey,
         "dw-customer-user-id": request.dwUserId,
       },
     };

@@ -24,18 +24,6 @@ const Drivewealth = ({
       }
       logger.info("Cache MISS");
       const url = `${boAPIUrl}/back-office/auth/tokens`;
-      logger.info(url,
-        {
-          clientID: dwClientID,
-          clientSecret: dwSecret,
-        },
-        {
-          headers : {
-            "cache-control": "no-cache",
-            "Content-Type": "application/json",
-            "dw-client-app-key": dwAppKey,
-          },
-        })
       const resp = await fetch.post(
         url,
         {
