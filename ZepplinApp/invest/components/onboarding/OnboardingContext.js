@@ -1,27 +1,11 @@
 import React, { useEffect, createContext, useReducer, useContext } from "react";
-import config from "../../config";
 import { AuthContext } from "../../FirebaseProvider";
 import { InvestmentContext } from "../../InvestmentProvider";
 
 export const OnboardingContext = createContext({});
 
 const initialState = {
-  // exposure: "none",
-  // citizenship: "us_citizen",
-  // // employment: "employed",
-  // // experienceLevel: "novice",
-  // ssn: "",
-  // dob: "",
-  // taxpayer_status: "",
-  // us_citizenship_status: "",
-  // special_considerations: "",
-  // employment_status: "",
-  // yearly_income: "",
-  // invest_experience: "",
-  // financial_future: "",
-  // areas_of_interest: "",
-  // privacy: "",
-  // address: "",
+  
 };
 
 function reducer(state, action) {

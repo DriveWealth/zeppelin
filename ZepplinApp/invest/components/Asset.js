@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Button, Text, Spinner, Badge, Icon, H1, H2, H3 } from "native-base";
 import AssetChart from "./AssetChart";
-import config from "../config";
 import { useNavigation } from "@react-navigation/core";
 import { InvestmentContext } from "../InvestmentContext";
 import numeral from "numeral";
@@ -12,47 +11,6 @@ const App = ({ asset }) => {
   const { account } = useContext(InvestmentContext);
 
   const navigation = useNavigation();
-
-  const handleBuyStock = async (quantity) => {
-    try {
-      const resp = await fetch(config.gqlUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          // "x-pypl-encrypted-account-number": user.uniqueId,
-          "Authorization": "custom-authorized",
-        },
-        body: JSON.stringify({
-          operationName: "createOrder",
-          query: `mutation createOrder($order: OrderInput!) {
-                        createOrder(order: $order) {
-                          symbol
-                        }
-                      }`,
-          variables: {
-            order: {
-              symbol: asset.symbol,
-              qty: quantity,
-              side: "buy",
-              timeInForce: "day",
-              type: "market",
-            },
-          },
-        }),
-      });
-      const json = await resp.json();
-      if (json.errors && json.errors.length > 0) {
-        alert(json.errors[0].message);
-      } else {
-        alert(
-          `Congratulations! You bought ${quantity} share of ${asset.symbol}`
-        );
-      }
-    } catch (e) {
-      alert(e.message);
-    }
-  };
 
   if (isBusy) {
     <View style={{ padding: 20 }}></View>;

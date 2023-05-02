@@ -8,11 +8,8 @@ import React, {
 import { useQuery } from "react-query";
 import Constants from 'expo-constants';
 
-// import * as Keychain from 'react-native-keychain';
-import config from "./config";
 import { AuthContext } from "./FirebaseProvider";
-import * as api from "./utils/api.js";
-import axios from "axios";
+
 import moment from "moment";
 
 import InvestClient from "./lib/drivewealth";
@@ -48,14 +45,6 @@ function reducer(state, action) {
     }
     case "set_positions": {
       const { positions } = action;
-      // let portfolioValue = (positions || []).reduce((acc, p) => {
-      //   console.log(p.symbol, p.currentPrice, p.last);
-      //   return acc + (p.currentPrice || 0) * p.qty;
-      // }, 0.0);
-      // return {...state, positions, portfolioValue};
-
-      // // const {positions, totalValue} = action;
-
       return { ...state, positions };
     }
     case "set_portfolio_history": {
@@ -65,10 +54,6 @@ function reducer(state, action) {
     }
     case "set_orders": {
       const { orders } = action;
-      // let newOrders = (orders || []).sort((a, b) => {
-      //   return b.updatedAt > a.updatedAt ? 1 : -1;
-      // });
-      // console.log(newOrders, '<<<<,newOrders')
       return { ...state, orders };
     }
     case "set_movers": {
@@ -191,18 +176,8 @@ const InvestmentProvider = ({ children, authHeaders, lookupSymbol }) => {
   );
 
   useEffect(() => {
-    // const timer = setInterval(() => {
     if (!user) return;
     account.refetch();
-    // fetchInstruments();
-    // refetchPositions()
-    // fetchPortfolioHistory()
-    // fetchOrders()
-    // }, 10000)
-    // fetchMarketData()
-
-    // // fetchOnboardingAndHoldings();
-    // return () => clearInterval(timer)
   }, [user]);
 
   useEffect(() => {
@@ -211,41 +186,6 @@ const InvestmentProvider = ({ children, authHeaders, lookupSymbol }) => {
     orders.refetch(account.data.id);
     // fetchOrders();
   }, [account.data]);
-
-  const fetchOnboardingAndHoldings = async () => {
-    try {
-      // const paypalId = user.uniqueId
-      const paypalId = "111"; // HARDCODING FOR NOW
-      // THE PROFILE TABLE CURRENTLY HAS NO FIELD TO BE ABLE TO LINK IT WITH THE PAYPAL ACCOUNT NUMBER. THEREFORE AT THE MOMENT WE ARE HARDCODING A PROFILE ID VALUE SO THAT WE CAN DO CREATE ONBOARDING OBJECTS AND FETCH HOLDINGS.
-
-      // FOR DEMOING PURPOSES, IF YOU WANT AN UNBOARDED USER FLOW THEN HARCODE A PROFILE ID THAT YOU ARE SURE ISNT IN THE DABASE, SOMETHING LIKE 1000. IF YOU WANT TO RECREATE AN ONBOARDED USER FLOW THEN HARDCODE AN ID THAT YOU HAVE PREVIOUSLY FINISHED AN ONBOARDING FLOW WITH.
-
-      // AS OF THIS MOMENT, THIS ID "11" HAS BEEN ONBOARDED AND HAS SOME HOLDINGS THAT DISPLAY IN A CHART.
-
-      const response = await api.getOnboardingByProfile(paypalId);
-      if (response.data) {
-        const onboardingData = response.data.getOnboardingByProfile;
-        console.log("----das onboardingData ", onboardingData);
-        const formattedHoldings = await fetchAndFormatHoldings(paypalId);
-        dispatch({
-          type: "set_account",
-          account: onboardingData,
-        });
-        dispatch({
-          type: "set_positions",
-          positions: formattedHoldings,
-        });
-      } else {
-        console.log("response.data is null");
-        return dispatch({
-          type: "set_account",
-          account: null,
-        });
-      }
-    } catch (error) {
-      console.log("--fetchOnboardingAndHoldings error ", error);
-    }
-  };
 
   const createUser = async ({
     basic,
@@ -355,114 +295,6 @@ const InvestmentProvider = ({ children, authHeaders, lookupSymbol }) => {
     }
   };
 
-  const getPortfolioHistory = async (timeframe, endDate) => {
-    try {
-      const data = {
-        query: `{
-            portfolioHistory(history: {endDate: "${endDate}", timeframe: "${timeframe}"}) {
-              timeframe
-              equity
-              timestamp
-            }
-          }`,
-      };
-
-      // console.log(data.query)
-
-      const resp = await axios.post(config.appGQUrl, data, {
-        headers: {
-          "Content-Type": "application/json",
-          // 'x-pypl-encrypted-account-number': user.uniqueId,
-          "x-api-key": config.appAPIKey,
-        },
-      });
-      const { portfolioHistory } = resp.data.data;
-      console.log(portfolioHistory, "portfolio history response <<<<<");
-      dispatch({
-        type: "set_portfolio_history",
-        portfolioHistory,
-        timeframe,
-        endDate,
-      });
-    } catch (error) {
-      console.log("-------------------api portfolio history error ", error);
-    }
-  };
-
-  const fetchPortfolioHistory = async () => {
-    let { endDate, timeframe } = state.portfolioHistory;
-
-    const resp = await axios.post(
-      config.appGQUrl,
-      {
-        query: `{
-          portfolioHistory(history: {endDate: "${endDate}", timeframe: "2MIN"}) {
-            timeframe
-            equity
-            timestamp
-          }
-        }`,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          // 'x-pypl-encrypted-account-number': user.uniqueId,
-          "x-api-key": config.appAPIKey,
-        },
-      }
-    );
-
-    const { portfolioHistory } = resp.data.data;
-    portfolioHistory.equity = portfolioHistory.equity.map(
-      (e) => Math.round((e + Number.EPSILON) * 100) / 100
-    );
-    // alert(JSON.stringify(portfolioHistory, null, 2))
-
-    dispatch({
-      type: "set_portfolio_history",
-      portfolioHistory: { ...portfolioHistory, endDate, timeframe },
-    });
-  };
-
-  const fetchMarketData = async () => {
-    const securities = await api.fetchMarketData();
-    dispatch({
-      type: "set_trending",
-      securities,
-    });
-  };
-
-  const fetchAndFormatHoldings = async (profileId) => {
-    try {
-      const response = await api.getHoldings(profileId);
-      let holdings = response.data.getHoldings;
-      let formattedHoldings = [];
-      const result = holdings.map(async (holding) => {
-        const res1 = await api.getHoldingBasicInfo(holding.symbol);
-        const title = res1.data.security.title;
-        const res2 = await api.getHoldingHistoricalPrice(holding.symbol);
-        const oneYearOfPrices = res2.data.historicalPrice.bars;
-        const oneMonthOfPrices = oneYearOfPrices.slice(0, 31);
-        const yesterdayInfo = oneMonthOfPrices[oneMonthOfPrices.length - 1];
-        const todayPrice = yesterdayInfo.closePrice;
-        const twoDaysAgoInfo = oneMonthOfPrices[oneMonthOfPrices.length - 2];
-        const changeToday = twoDaysAgoInfo.closePrice - todayPrice;
-        const formatted = {
-          symbol: holding.symbol,
-          name: title,
-          month: oneMonthOfPrices,
-          marketValue: todayPrice,
-          changeToday,
-        };
-        return formatted;
-      });
-      formattedHoldings = await Promise.all(result);
-      return formattedHoldings;
-    } catch (error) {
-      console.log("-------------------fetchAndFormatHoldings error ", error);
-    }
-  };
 
   // useEffect(() => {
   //   refreshIdToken();
@@ -476,15 +308,15 @@ const InvestmentProvider = ({ children, authHeaders, lookupSymbol }) => {
         account, //: { data: account.data, status: accountStatus },
         positions, //: { data: positionsData, status: positionsStatus },
         orders,
-        ...api,
+        // ...api,
         createUser,
         createAccount,
         createOrder,
         fetchAccount: account.refetch,
         fetchPositions: positions.refetch,
         fetchOrders: orders.refetch,
-        fetchPortfolioHistory,
-        getPortfolioHistory,
+        // fetchPortfolioHistory,
+        // getPortfolioHistory,
         fetchInstruments,
         fetchAsset: fetchAsset(investClient),
         fetchBars: fetchBars(investClient),

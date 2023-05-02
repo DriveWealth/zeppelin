@@ -8,12 +8,10 @@ import {
   VStack,
   Pressable,
   Divider,
-  Modal,
 } from "native-base";
 
 import { View, TouchableWithoutFeedback } from "react-native";
 
-import config from "../../config";
 import { InvestmentContext } from "../../InvestmentProvider";
 
 const DismissKeyboard = ({ children }) => (
@@ -29,36 +27,6 @@ const SearchHero = ({ onStockSymbolPress }) => {
   const { fetchInstruments, instruments } = useContext(InvestmentContext);
   // TODO: create class wrapper for this
   // TODO: add GQL lib to make queries work nicer
-  const getSuggestions = async (search) => {
-    const resp = await fetch(config.gqlUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "x-api-key": config.apiKey,
-      },
-      body: JSON.stringify({
-        operationName: "searchSecurities",
-        query: `
-          query searchSecurities {
-            searchSecurities(filter: {symbol: {startsWith: "${search}"}}) {
-              edges {
-                node {
-                  market
-                  symbol
-                  description
-                }
-              }
-            }
-          }`,
-      }),
-    });
-
-    const { data } = await resp.json();
-    const suggestions = data.searchSecurities.edges.map((e) => e.node);
-    // console.log(JSON.stringify(suggestions, null, 2))
-    return suggestions;
-  };
 
   useEffect(() => {
     const update = async () => {

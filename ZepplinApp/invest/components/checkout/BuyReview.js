@@ -9,17 +9,7 @@ import {
 import {
   Button,
   Text,
-  Spinner,
-  ListItem,
-  CheckBox,
-  Body,
-  H2,
-  Icon,
-  Badge,
-  IconButton,
-  CloseIcon,
 } from 'native-base';
-import config from '../../config';
 
 import {InvestmentContext} from '../../InvestmentContext';
 import {UIContext} from '../UIContext'

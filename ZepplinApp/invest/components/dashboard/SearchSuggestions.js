@@ -14,8 +14,6 @@ import {
   HStack,
 } from 'native-base';
 
-import config from '../../config';
-
 const SearchSuggestions = ({suggestions, onSuggestionSelected}) => {
   return (
     <Box

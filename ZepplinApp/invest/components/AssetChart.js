@@ -9,7 +9,6 @@ import {
 } from "./Victory";
 
 import moment from "moment";
-// import config from '../config'
 import { InvestmentContext } from "../InvestmentProvider";
 import { Button, HStack } from "native-base";
 

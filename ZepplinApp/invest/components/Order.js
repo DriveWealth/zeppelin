@@ -12,14 +12,7 @@ import {
 import { H2, H1, Item, Icon, Input, Button, Form, Label, ArrowBackIcon, IconButton } from "native-base";
 
 import { InvestmentContext } from "../InvestmentContext";
-import Asset from "./Asset";
-import config from "../config";
-// import Checkout from "../components/checkout";
-import numeral from "numeral";
-
 import StockDetail from "../pages/stock-detail";
-
-// import UIProvider from "./UIContext";
 
 const currency = {
   USD: "$",
