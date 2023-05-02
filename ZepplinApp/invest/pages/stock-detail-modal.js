@@ -4,24 +4,19 @@ import BackButton from "./../components/BackButton";
 import {
   Box,
   VStack,
-  Divider,
   ScrollView,
   Pressable,
   Text,
   Button,
-  ArrowBackIcon,
   Center,
   HStack,
-  Flex,
   Spinner,
-  Icon,
   CloseIcon,
 } from "native-base";
 
 import { useQuery } from "react-query";
 
 import StockDetailHero from "../components/stock-detail/hero";
-import AssetChart from "../components/AssetChart";
 import _ from "lodash";
 import { InvestmentContext } from "../InvestmentProvider";
 
