@@ -16,6 +16,8 @@ const Drivewealth = require("./drivewealth");
 const dwClientID = process.env.DW_CLIENT_ID;
 const boAPIUrl = process.env.DW_API_URL;
 
+// Optionally use Firebase Secret Manager (paid service)
+
 // Define the secrets so that they get populated at runtime
 // const dwClientSecret = defineSecret("DW_CLIENT_SECRET");
 // const dwAppKey = defineSecret("DW_APP_KEY");
@@ -27,8 +29,6 @@ const dwAppKey = process.env.DW_APP_KEY;
 admin.initializeApp({
   credential: applicationDefault(),
 });
-
-const BROKER_URL = "https://bo-api.drivewealth.io";
 
 // A handler for the CORS Middleware
 const corsHandler = cors({ origin: true });
