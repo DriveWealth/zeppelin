@@ -3,8 +3,8 @@ const BASE_URL = 'https://bo-api.drivewealth.io';
 
 const Drivewealth = ({
   boAPIUrl = BASE_URL,
-  dwClientID,
-  dwSecret,
+  dwUsername,
+  dwPassword,
   dwAppKey,
   logger,
 }) => {
@@ -23,12 +23,12 @@ const Drivewealth = ({
         return dw.cache;
       }
       logger.info("Cache MISS");
-      const url = `${boAPIUrl}/back-office/auth/tokens`;
+      const url = `${boAPIUrl}/back-office/auth`;
       const resp = await fetch.post(
         url,
         {
-          clientID: dwClientID,
-          clientSecret: dwSecret,
+          username: dwUsername,
+          password: dwPassword,
         },
         {
           headers : {
@@ -41,12 +41,12 @@ const Drivewealth = ({
       if (resp.status !== 200) {
         throw new Error("Error retreiving account from DW");
       }
-      const { access_token, token_type, expires_in, scope } = resp.data;
+      const { authToken, token_type, expires_in, scope } = resp.data;
       // Memoize
-      logger.info("Save token to cache");
+      logger.info("Save token to cache authToken.."+authToken);
       dw.cache = {
         type: token_type,
-        accessToken: access_token,
+        accessToken: authToken,
         expiresIn: Date.now() + (expires_in - 60),
         scope,
       };
@@ -58,7 +58,7 @@ const Drivewealth = ({
         "cache-control": "no-cache",
         "Content-Type": "application/json",
         "dw-client-app-key": dwAppKey,
-        Authorization: `Bearer ${dw.cache.accessToken}`,
+        "dw-auth-token": dw.cache.accessToken,
       };
     },
     async getPositions(accountID) {

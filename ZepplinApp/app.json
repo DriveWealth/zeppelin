@@ -40,16 +40,16 @@
         "projectId": "0ee6b0ab-4a43-43ca-8add-dc7057b7ec2f"
       },
       "firebaseConfig": {
-        "apiKey": "AIzaSyDr6zBJ911Np5iqezc5XJ9h2fJXxDea0WM",
-        "authDomain": "drivewealth-a7e9a.firebaseapp.com",
-        "projectId": "drivewealth-a7e9a",
-        "storageBucket": "drivewealth-a7e9a.appspot.com",
-        "messagingSenderId": "459224660252",
-        "appId": "1:459224660252:web:d4c5e90c8a50dcdf5ea2d9",
-        "measurementId": "G-E1D3TM3K2R"
+        "apiKey": "AIzaSyBGbldPoR1lyLeIBGSDnGYlG6QFsJ1PQkw",
+        "authDomain": "fir-app-31d70.firebaseapp.com",
+        "projectId": "fir-app-31d70",
+        "storageBucket": "fir-app-31d70.appspot.com",
+        "messagingSenderId": "301444822257",
+        "appId": "1:301444822257:web:1775a91820045a0b586550",
+        "measurementId": "G-C97JZVJB77"
       },
       "drivewealth": {
-        "apiUrl": "http://localhost:5002"
+        "apiUrl": "http://localhost:5000"
       }
     }
   }
