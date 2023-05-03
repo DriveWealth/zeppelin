@@ -6,14 +6,6 @@ import { InvestmentContext } from "../InvestmentProvider";
 import Holdings from "./../components/Holdings";
 import Portfolio from "./../components/Portfolio";
 import Orders from "./../components/orders";
-// import Trending from "./../components/explore/Trending";
-
-// import NewsIcon from "../images/news.png";
-// import MarketIcon from "../images/market.png";
-// import BearIcon from "../images/bear.png";
-// import BullIcon from "../images/bull.png";
-// import EducationIcon from "../images/education.png";
-// import WelcomeIcon from "../images/welcome.png";
 
 import ScrollablePage from "../components/ScollablePage";
 import {

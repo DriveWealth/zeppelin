@@ -1,10 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import NewsIcon from "../images/news.png";
-import MarketIcon from "../images/market.png";
-import BearIcon from "../images/bear.png";
-import BullIcon from "../images/bull.png";
-import EducationIcon from "../images/education.png";
-import WelcomeIcon from "../images/welcome.png";
 import { WebView } from "react-native-webview";
 import {
   Box,
