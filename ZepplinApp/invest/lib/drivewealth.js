@@ -105,7 +105,7 @@ const Drivewealth = ({ baseUrl, authHeaders }) => {
       }
       const asset = resp.data;
       // Snapshot
-      const snapResp = await fetch.get(`${baseUrl}/back-office/quotes/vdr`, {
+      const snapResp = await fetch.get(`${baseUrl}/back-office/quotes`, {
         headers: {...headers },
         params: {
           symbols: symbol

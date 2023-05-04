@@ -1,8 +1,8 @@
 const fetch = require("axios");
-const BASE_URL = 'https://bo-api.drivewealth.io';
+// const BASE_URL = 'https://bo-api.drivewealth.io';
 
 const Drivewealth = ({
-  boAPIUrl = BASE_URL,
+  boAPIUrl,
   dwUsername,
   dwPassword,
   dwAppKey,
@@ -86,7 +86,7 @@ const Drivewealth = ({
       }
       const asset = resp.data;
       // Snapshot
-      const snapResp = await fetch.get(`${boAPIUrl}/back-office/quotes/vdr`, {
+      const snapResp = await fetch.get(`${boAPIUrl}/back-office/quotes`, {
         headers: { ...headers },
         params: {
           symbols: symbol,

@@ -82,7 +82,6 @@ const StockDetail = ({ route, navigation }) => {
         <AssetChart asset={asset.data} />
         <ScrollView>
         <Box m="3"style={{overflow: 'auto'}}>
-          <Text>{asset.data.description}</Text>
         </Box>
         </ScrollView>
         
