@@ -43,6 +43,20 @@ const Drivewealth = ({ baseUrl, authHeaders }) => {
         throw new Error("Error creating account in DW");
       }
       const account = resp.data;
+
+      const depositPayload = {
+        accountNo: account.accountNo,
+        amount: 20000,
+        currency: "USD",
+        type: "ACH_DIRECT2BANK",
+        note: "Onboarding demo"
+      }
+      const finalResp = await fetch.post(`${baseUrl}/back-office/funding/deposits`, depositPayload, {
+        headers,
+      });
+      if (finalResp !== 200) {
+        throw new Error("Error depositing cash to the account!");
+      }
       return account;
     },
     async getAccounts() {
@@ -105,7 +119,7 @@ const Drivewealth = ({ baseUrl, authHeaders }) => {
       }
       const asset = resp.data;
       // Snapshot
-      const snapResp = await fetch.get(`${baseUrl}/back-office/quotes/vdr`, {
+      const snapResp = await fetch.get(`${baseUrl}/back-office/quotes`, {
         headers: {...headers },
         params: {
           symbols: symbol

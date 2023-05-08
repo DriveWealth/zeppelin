@@ -13,22 +13,24 @@ const axios = require("axios");
 const Drivewealth = require("./drivewealth");
 
 // Load app properties
-const dwClientID = process.env.DW_CLIENT_ID;
+// const dwClientID = process.env.DW_CLIENT_ID;
 const boAPIUrl = process.env.DW_API_URL;
-
-// Optionally use Firebase Secret Manager (paid service)
+const dwUsername = process.env.DW_USERNAME;
+const dwPassword = process.env.DW_PASSWORD;
 
 // Define the secrets so that they get populated at runtime
 // const dwClientSecret = defineSecret("DW_CLIENT_SECRET");
 // const dwAppKey = defineSecret("DW_APP_KEY");
 
 // For Local just get it from env
-const dwClientSecret = process.env.DW_CLIENT_SECRET;
+// const dwClientSecret = process.env.DW_CLIENT_SECRET;
 const dwAppKey = process.env.DW_APP_KEY;
 
 admin.initializeApp({
   credential: applicationDefault(),
 });
+
+// const BROKER_URL = "https://bo-api.drivewealth.io";
 
 // A handler for the CORS Middleware
 const corsHandler = cors({ origin: true });
@@ -109,7 +111,7 @@ const proxyHandler = ({dwConfig, request, response}) => async () => {
       params: request.query,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
+        "dw-auth-token": accessToken,
         "dw-client-app-key": dwAppKey,
         "dw-customer-user-id": request.dwUserId,
       },
@@ -151,11 +153,12 @@ exports.proxy = functions
   .https.onRequest(async (request, response) => {
     const dwConfig = {
       boAPIUrl,
-      dwClientID,
+      dwUsername,
+      dwPassword,
       // dwSecret: dwClientSecret.value(),
       // dwAppKey: dwAppKey.value(),
-      dwSecret: dwClientSecret,
-      dwAppKey: dwAppKey,
+      // dwSecret: dwClientSecret,
+      dwAppKey,
       logger: functions.logger,
     }
 
